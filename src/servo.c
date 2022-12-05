@@ -1,5 +1,9 @@
 #include "servo.h"
 
+const int MAX_ANGLE_PULSE = 2500;
+const int MIN_ANGLE_PULSE = 500;
+const float DEGREES_IN_USEC = 0.09f;
+
 void configure_pwm_pins(void);
 void initialize_rotating_servo(void);
 void set_vertial_rotation_angle(float angle);
@@ -43,6 +47,34 @@ void set_horizontal_rotation_angle(float angle){
     TIM2 -> CCR2 = usecs;
 }
 
+void rotate_vertical_inc(void){
+    uint32_t currentValue = TIM2 -> CCR1;
+    if(currentValue < MAX_ANGLE_PULSE){
+        TIM2 -> CCR1 = currentValue + 1;
+    }
+}
+
+void rotate_horizontal_inc(void){
+    uint32_t currentValue = TIM2 -> CCR2;
+    if(currentValue < MAX_ANGLE_PULSE){
+        TIM2 -> CCR2 = currentValue + 1;
+    }
+}
+
+void rotate_vertical_dec(void){
+    uint32_t currentValue = TIM2 -> CCR1;
+    if(currentValue > MIN_ANGLE_PULSE){
+        TIM2 -> CCR1 = currentValue - 1;
+    }
+}
+
+void rotate_horizontal_dec(void){
+    uint32_t currentValue = TIM2 -> CCR2;
+    if(currentValue > MIN_ANGLE_PULSE){
+        TIM2 -> CCR2 = currentValue - 1;
+    }
+}
+
 void initialize_rotating_servo(void){
     TIM_DeInit(TIM2);
 
@@ -68,11 +100,15 @@ void initialize_rotating_servo(void){
     TIM2 -> PSC = 16 - 1;
     TIM2 -> CNT = 0;
 
-    TIM2 -> CCR1 = 0;
-    TIM2 -> CCR2 = 0;
+    TIM2 -> CCR1 = MAX_ANGLE_PULSE;
+    TIM2 -> CCR2 = MAX_ANGLE_PULSE;
     TIM2 -> ARR = 20000 - 1;
 
+    TIM2 -> DIER |= TIM_DIER_UIE;
+
     TIM2 -> CR1 = TIM_CR1_CEN;
+
+    NVIC_EnableIRQ(TIM2_IRQn);
 }
 
 void configure_pwm_pins(void){

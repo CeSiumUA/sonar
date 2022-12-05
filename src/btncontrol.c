@@ -31,14 +31,10 @@ void initialize_control_buttons(void){
     EXTI -> RTSR |= EXTI_RTSR_TR8;
 
     EXTI -> FTSR |= EXTI_FTSR_TR5;
-    EXTI -> FTSR |= EXTI_FTSR_TR6;
+    //EXTI -> FTSR |= EXTI_FTSR_TR6;
     EXTI -> FTSR |= EXTI_FTSR_TR8;
 
     NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-    __disable_irq();
-
-    __enable_irq();
 }
 
 void process_left_button(void){
@@ -51,4 +47,16 @@ void process_right_button(void){
 
 void process_mode_selection(void){
     is_mode_vertical = !is_mode_vertical;
+}
+
+int get_left_button_state(void){
+    return is_left_button_pressed;
+}
+
+int get_right_button_state(void){
+    return is_right_button_pressed;
+}
+
+int get_middle_button_state(void){
+    return is_mode_vertical;
 }

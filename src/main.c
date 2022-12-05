@@ -1,11 +1,44 @@
 #include "stm32f4xx.h"
 #include "btncontrol.h"
+#include "servo.h"
+
+void init_irqs(void){
+    __disable_irq();
+    __enable_irq();
+}
 
 int main(void){
 
+    init_irqs();
+
     initialize_control_buttons();
 
+    initialize_rotating_servo();
+
     while(1){
+    }
+}
+
+void TIM2_IRQHandler(void){
+    TIM2 -> SR &=~TIM_SR_UIF;
+
+    int mode = get_middle_button_state();
+
+    if(get_left_button_state()){
+        if(mode){
+            rotate_vertical_inc();
+        }
+        else{
+            rotate_horizontal_inc();
+        }
+    }
+    else if(get_right_button_state()){
+        if(mode){
+            rotate_vertical_dec();
+        }
+        else{
+            rotate_horizontal_dec();
+        }
     }
 }
 
