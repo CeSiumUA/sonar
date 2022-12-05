@@ -50,28 +50,28 @@ void set_horizontal_rotation_angle(float angle){
 void rotate_vertical_inc(void){
     uint32_t currentValue = TIM2 -> CCR1;
     if(currentValue < MAX_ANGLE_PULSE){
-        TIM2 -> CCR1 = currentValue + 1;
+        TIM2 -> CCR1 = currentValue + 10;
     }
 }
 
 void rotate_horizontal_inc(void){
     uint32_t currentValue = TIM2 -> CCR2;
     if(currentValue < MAX_ANGLE_PULSE){
-        TIM2 -> CCR2 = currentValue + 1;
+        TIM2 -> CCR2 = currentValue + 10;
     }
 }
 
 void rotate_vertical_dec(void){
     uint32_t currentValue = TIM2 -> CCR1;
     if(currentValue > MIN_ANGLE_PULSE){
-        TIM2 -> CCR1 = currentValue - 1;
+        TIM2 -> CCR1 = currentValue - 10;
     }
 }
 
 void rotate_horizontal_dec(void){
     uint32_t currentValue = TIM2 -> CCR2;
     if(currentValue > MIN_ANGLE_PULSE){
-        TIM2 -> CCR2 = currentValue - 1;
+        TIM2 -> CCR2 = currentValue - 10;
     }
 }
 
