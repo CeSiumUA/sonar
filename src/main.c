@@ -2,6 +2,8 @@
 #include "btncontrol.h"
 #include "servo.h"
 
+void process_control_buttons(void);
+
 void init_irqs(void){
     __disable_irq();
     __enable_irq();
@@ -18,19 +20,23 @@ int main(void){
     initialize_rotating_servo();
 
     while(1){
-        if(GPIOC -> IDR & GPIO_IDR_IDR_5){
-            set_left_button(1);
-        }
-        else{
-            set_left_button(0);
-        }
+        process_control_buttons();
+    }
+}
 
-        if(GPIOC -> IDR & GPIO_IDR_IDR_8){
-            set_right_button(1);
-        }
-        else{
-            set_right_button(0);
-        }
+void process_control_buttons(void){
+    if(GPIOC -> IDR & GPIO_IDR_IDR_5){
+        set_left_button(1);
+    }
+    else{
+        set_left_button(0);
+    }
+
+    if(GPIOC -> IDR & GPIO_IDR_IDR_8){
+        set_right_button(1);
+    }
+    else{
+        set_right_button(0);
     }
 }
 
