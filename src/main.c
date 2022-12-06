@@ -9,6 +9,8 @@ void init_irqs(void){
 
 int main(void){
 
+    RCC_DeInit();
+
     init_irqs();
 
     initialize_control_buttons();
@@ -16,6 +18,19 @@ int main(void){
     initialize_rotating_servo();
 
     while(1){
+        if(GPIOC -> IDR & GPIO_IDR_IDR_5){
+            set_left_button(1);
+        }
+        else{
+            set_left_button(0);
+        }
+
+        if(GPIOC -> IDR & GPIO_IDR_IDR_8){
+            set_right_button(1);
+        }
+        else{
+            set_right_button(0);
+        }
     }
 }
 
@@ -43,19 +58,17 @@ void TIM2_IRQHandler(void){
 }
 
 void EXTI9_5_IRQHandler(void){
-    if(EXTI -> PR & EXTI_PR_PR5){
-        process_left_button();
-
+    /*if(EXTI -> PR & EXTI_PR_PR5){
         EXTI -> PR |= EXTI_PR_PR5;
+        process_left_button();
     }
-    else if(EXTI -> PR & EXTI_PR_PR6){
-        process_mode_selection();
-
+    else */
+    if(EXTI -> PR & EXTI_PR_PR6){
         EXTI -> PR |= EXTI_PR_PR6;
+        process_mode_selection();
     }
-    else if(EXTI -> PR & EXTI_PR_PR8){
-        process_right_button();
-
+    /*else if(EXTI -> PR & EXTI_PR_PR8){
         EXTI -> PR |= EXTI_PR_PR8;
-    }
+        process_right_button();
+    }*/
 }
