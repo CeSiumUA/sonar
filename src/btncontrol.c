@@ -27,20 +27,11 @@ void initialize_control_buttons(void){
     GPIOC -> PUPDR |= GPIO_PUPDR_PUPDR8_1;
     GPIOC -> PUPDR &=~GPIO_PUPDR_PUPDR8_0;
 
-    //SYSCFG -> EXTICR[1] |= SYSCFG_EXTICR2_EXTI5_PC;
     SYSCFG -> EXTICR[1] |= SYSCFG_EXTICR2_EXTI6_PC;
-    //SYSCFG -> EXTICR[2] |= SYSCFG_EXTICR3_EXTI8_PC;
 
-    //EXTI -> IMR |= EXTI_IMR_MR5;
     EXTI -> IMR |= EXTI_IMR_MR6;
-    //EXTI -> IMR |= EXTI_IMR_MR8;
 
-    //EXTI -> RTSR |= EXTI_RTSR_TR5;
     EXTI -> RTSR |= EXTI_RTSR_TR6;
-    //EXTI -> RTSR |= EXTI_RTSR_TR8;
-
-    //EXTI -> FTSR |= EXTI_FTSR_TR5;
-    //EXTI -> FTSR |= EXTI_FTSR_TR8;
 
     NVIC_EnableIRQ(EXTI9_5_IRQn);
 }

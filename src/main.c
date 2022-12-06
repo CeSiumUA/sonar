@@ -58,17 +58,8 @@ void TIM2_IRQHandler(void){
 }
 
 void EXTI9_5_IRQHandler(void){
-    /*if(EXTI -> PR & EXTI_PR_PR5){
-        EXTI -> PR |= EXTI_PR_PR5;
-        process_left_button();
-    }
-    else */
     if(EXTI -> PR & EXTI_PR_PR6){
         EXTI -> PR |= EXTI_PR_PR6;
         process_mode_selection();
     }
-    /*else if(EXTI -> PR & EXTI_PR_PR8){
-        EXTI -> PR |= EXTI_PR_PR8;
-        process_right_button();
-    }*/
 }
