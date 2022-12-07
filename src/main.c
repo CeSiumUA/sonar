@@ -1,6 +1,7 @@
 #include "stm32f4xx.h"
 #include "btncontrol.h"
 #include "servo.h"
+#include "usart.h"
 
 void process_control_buttons(void);
 
@@ -18,6 +19,12 @@ int main(void){
     initialize_control_buttons();
 
     initialize_rotating_servo();
+
+    initialize_usart_bt((uint32_t)&USART2 -> DR);
+
+    char message[13] = "hello world\r\n";
+
+    usart_bt_write((uint32_t)message, 13);
 
     while(1){
         process_control_buttons();
@@ -61,6 +68,14 @@ void TIM2_IRQHandler(void){
             rotate_horizontal_dec();
         }
     }
+}
+
+void DMA1_Stream5_IRQHandler(void){
+    DMA1 -> HIFCR |= DMA_HIFCR_CTCIF5;
+}
+
+void DMA1_Stream6_IRQHandler(void){
+    DMA1 -> HIFCR |= DMA_HIFCR_CTCIF6;
 }
 
 void EXTI9_5_IRQHandler(void){

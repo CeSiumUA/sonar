@@ -9,7 +9,8 @@
 		"cortex-debug.openocdPath": "/usr/bin/openocd",
 		"files.associations": {
 			"stm32f4xx.h": "c",
-			"stm32f4xx_conf.h": "c"
+			"stm32f4xx_conf.h": "c",
+			"usart.h": "c"
 		},
 		"cortex-debug.variableUseNaturalFormat": false
 	}
