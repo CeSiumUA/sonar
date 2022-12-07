@@ -21,14 +21,11 @@ int main(void){
 
     init_irqs();
 
-    //initialize_control_buttons();
-
     initialize_rotating_servo();
 
     initialize_usart_bt((uint32_t)command_buffer, COMMAND_BUFFER_LENGTH);
 
     while(1){
-        //process_control_buttons();
     }
 }
 
@@ -50,25 +47,6 @@ void process_control_buttons(void){
 
 void TIM2_IRQHandler(void){
     TIM2 -> SR &=~TIM_SR_UIF;
-
-    /*int mode = get_middle_button_state();
-
-    if(get_left_button_state()){
-        if(mode){
-            rotate_vertical_inc();
-        }
-        else{
-            rotate_horizontal_inc();
-        }
-    }
-    else if(get_right_button_state()){
-        if(mode){
-            rotate_vertical_dec();
-        }
-        else{
-            rotate_horizontal_dec();
-        }
-    }*/
 }
 
 void DMA1_Stream5_IRQHandler(void){
