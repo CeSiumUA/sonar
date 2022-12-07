@@ -35,7 +35,7 @@ void initialize_usart(void){
     USART2 -> CR1 |= (USART_CR1_TE | USART_CR1_RE | USART_CR1_UE);
 }
 
-void initialize_dma(uint32_t dst){
+void initialize_dma(uint32_t dst, uint32_t len){
     DMA_DeInit(DMA1_Stream5);
     DMA_DeInit(DMA1_Stream6);
 
@@ -54,7 +54,7 @@ void initialize_dma(uint32_t dst){
     DMA1_Stream6 -> PAR |= (uint32_t)&USART2 -> DR;
 
     DMA1_Stream5 -> M0AR = dst;
-    DMA1_Stream5 -> NDTR = 13;
+    DMA1_Stream5 -> NDTR = len;
 
     DMA1_Stream5 -> CR |= DMA_SxCR_CHSEL_2;
     DMA1_Stream6 -> CR |= DMA_SxCR_CHSEL_2;
@@ -77,11 +77,11 @@ void initialize_dma(uint32_t dst){
     NVIC_EnableIRQ(DMA1_Stream6_IRQn);
 }
 
-void initialize_usart_bt(uint32_t dst){
+void initialize_usart_bt(uint32_t dst, uint32_t len){
 
     initialize_usart();
 
-    initialize_dma(dst);
+    initialize_dma(dst, len);
 }
 
 void usart_bt_write(uint32_t src, uint32_t dtlen){

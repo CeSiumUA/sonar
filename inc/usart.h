@@ -4,7 +4,7 @@
 #include "stm32f4xx.h"
 #include <unistd.h>
 
-void initialize_usart_bt(uint32_t dst);
+void initialize_usart_bt(uint32_t dst, uint32_t len);
 void usart_bt_write(uint32_t src, uint32_t dtlen);
 
 #endif

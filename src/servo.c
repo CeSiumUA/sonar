@@ -6,19 +6,19 @@ const float DEGREES_IN_USEC = 0.09f;
 
 void configure_pwm_pins(void);
 void initialize_rotating_servo(void);
-void set_vertial_rotation_angle(float angle);
+void set_vertical_rotation_angle(float angle);
 void set_horizontal_rotation_angle(float angle);
 float get_current_horizontal_angle(void);
 float get_current_vertical_angle(void);
 
 float get_current_vertical_angle(void){
-    uint32_t usecs = TIM2 -> CCR1;
+    uint32_t usecs = TIM2 -> CCR2;
 
     return usecs * DEGREES_IN_USEC;
 }
 
 float get_current_horizontal_angle(void){
-    uint32_t usecs = TIM2 -> CCR2;
+    uint32_t usecs = TIM2 -> CCR1;
 
     return usecs * DEGREES_IN_USEC;
 }
@@ -38,36 +38,36 @@ int get_time_angle(float angle){
 void set_vertical_rotation_angle(float angle){
     int usecs = get_time_angle(angle);
 
-    TIM2 -> CCR1 = usecs;
+    TIM2 -> CCR2 = usecs;
 }
 
 void set_horizontal_rotation_angle(float angle){
     int usecs = get_time_angle(angle);
     
-    TIM2 -> CCR2 = usecs;
+    TIM2 -> CCR1 = usecs;    
 }
 
 void rotate_vertical_inc(void){
-    if(TIM2 -> CCR1 < MAX_ANGLE_PULSE){
-        TIM2 -> CCR1 += 50;
-    }
-}
-
-void rotate_horizontal_inc(void){
     if(TIM2 -> CCR2 < MAX_ANGLE_PULSE){
         TIM2 -> CCR2 += 50;
     }
 }
 
+void rotate_horizontal_inc(void){
+    if(TIM2 -> CCR1 < MAX_ANGLE_PULSE){
+        TIM2 -> CCR1 += 50;
+    }
+}
+
 void rotate_vertical_dec(void){
-    if(TIM2 -> CCR1 > MIN_ANGLE_PULSE){
-        TIM2 -> CCR1 -= 50;
+    if(TIM2 -> CCR2 > MIN_ANGLE_PULSE){
+        TIM2 -> CCR2 -= 50;
     }
 }
 
 void rotate_horizontal_dec(void){
-    if(TIM2 -> CCR2 > MIN_ANGLE_PULSE){
-        TIM2 -> CCR2 -= 50;
+    if(TIM2 -> CCR1 > MIN_ANGLE_PULSE){
+        TIM2 -> CCR1 -= 50;
     }
 }
 

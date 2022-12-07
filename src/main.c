@@ -2,8 +2,11 @@
 #include "btncontrol.h"
 #include "servo.h"
 #include "usart.h"
+#include <stdlib.h>
 
-char message[13] = "hello world\r\n";
+#define COMMAND_BUFFER_LENGTH 4
+
+char command_buffer[COMMAND_BUFFER_LENGTH];
 
 void process_control_buttons(void);
 
@@ -18,16 +21,14 @@ int main(void){
 
     init_irqs();
 
-    initialize_control_buttons();
+    //initialize_control_buttons();
 
     initialize_rotating_servo();
 
-    initialize_usart_bt((uint32_t)message);
-
-    usart_bt_write((uint32_t)message, 13);
+    initialize_usart_bt((uint32_t)command_buffer, COMMAND_BUFFER_LENGTH);
 
     while(1){
-        process_control_buttons();
+        //process_control_buttons();
     }
 }
 
@@ -50,7 +51,7 @@ void process_control_buttons(void){
 void TIM2_IRQHandler(void){
     TIM2 -> SR &=~TIM_SR_UIF;
 
-    int mode = get_middle_button_state();
+    /*int mode = get_middle_button_state();
 
     if(get_left_button_state()){
         if(mode){
@@ -67,11 +68,20 @@ void TIM2_IRQHandler(void){
         else{
             rotate_horizontal_dec();
         }
-    }
+    }*/
 }
 
 void DMA1_Stream5_IRQHandler(void){
     DMA1 -> HIFCR |= (DMA_HIFCR_CFEIF5 | DMA_HIFCR_CDMEIF5 | DMA_HIFCR_CTEIF5 | DMA_HIFCR_CHTIF5 | DMA_HIFCR_CTCIF5);
+
+    int mode = command_buffer[0] - '0';
+    float angle = atoff(command_buffer + 1);
+    if(mode){
+        set_horizontal_rotation_angle(angle);
+    }
+    else{
+        set_vertical_rotation_angle(angle);
+    }
 }
 
 void DMA1_Stream6_IRQHandler(void){
